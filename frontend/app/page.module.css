@@ -1,0 +1,115 @@
+/* 基础主干样式 */
+.main {
+    min-height: 80vh;
+}
+
+/* 分类导航栏样式 */
+.categorySection {
+    padding: 1rem 5%;
+    background: #f4f4f4;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.categoryLabel {
+    font-weight: bold;
+    color: #555;
+}
+
+.categoryLink {
+    text-decoration: none;
+    color: #333;
+    font-weight: normal;
+}
+
+.categoryLinkActive {
+    text-decoration: none;
+    color: #0070f3;
+    font-weight: bold;
+}
+
+/* Hero 宣传横幅样式 */
+.heroSection {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(to right, #000, #333);
+    color: white;
+    margin-bottom: 2rem;
+}
+
+/* 列表为空时的提示信息 */
+.emptyMessage {
+    padding: 2rem;
+    text-align: center;
+    width: 100%;
+}
+
+/* 原有商品网格相关样式 (保持你之前的即可，这里做个补充) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 0 5%;
+}
+
+.card {
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+.image {
+    object-fit: contain;
+    padding: 1rem;
+}
+
+.content {
+    padding: 1.5rem;
+}
+
+.productTitle {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.productLink {
+    text-decoration: none;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #0070f3;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #333;
+}

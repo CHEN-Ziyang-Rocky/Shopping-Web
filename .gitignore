@@ -1,0 +1,32 @@
+.DS_Store
+**/node_modules/
+**/.next/
+**/target/
+*.tsbuildinfo
+*.log
+*.db
+*.db-*
+*.pem
+*.key
+*.zip
+.env*
+!.env.example
+!**/.env.example
+backend/config/local-secrets.properties
+# The coursework report contains an administrator password; redact before publishing.
+Final Report.pdf
+
+# Public source release: keep runtime data and reports local.
+uploads/
+*.sqlite
+*.sqlite3
+*.p12
+*.pfx
+*.crt
+*.cer
+*.pdf
+*.docx
+*.pptx
+*.mp4
+*.ipynb
+backups/

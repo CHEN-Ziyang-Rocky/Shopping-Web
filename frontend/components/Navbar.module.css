@@ -1,0 +1,113 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    height: 70px;
+    background-color: #000;
+    color: white;
+    position: sticky;
+    /* 顶部吸附 */
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+}
+
+.nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+/* 购物车区域 */
+.cartContainer {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cartTrigger {
+    padding: 10px;
+    border: 1px solid transparent;
+}
+
+.cartContainer:hover .cartTrigger {
+    background: #222;
+    border-bottom: none;
+    z-index: 1002;
+}
+
+/* 购物车下拉框 */
+.cartDropdown {
+    display: none;
+    /* 默认隐藏 */
+    position: absolute;
+    right: 0;
+    top: 70px;
+    /* 紧贴 Header 底部 */
+    width: 320px;
+    background: white;
+    color: black;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 1001;
+    /* 确保盖住下面的内容 */
+    border-radius: 0 0 8px 8px;
+}
+
+/* 核心：Hover 显示 */
+.cartContainer:hover .cartDropdown {
+    display: block;
+}
+
+.cartItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.qtyInput {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.total {
+    text-align: right;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.checkoutBtn {
+    width: 100%;
+    padding: 12px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.checkoutBtn:hover {
+    background-color: #005bb5;
+}
