@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Category, Product } from "@/types";
 import { slug } from "@/lib/shop";
 import Icon from "./Icon";
 import ProductCard from "./ProductCard";
+import VoucherOffers from "./VoucherOffers";
 import { EmptyState } from "./ShopUI";
 export default function Catalog({
   categories,
@@ -20,6 +21,55 @@ export default function Catalog({
   const [query, setQuery] = useState(initialQuery);
   const [sort, setSort] = useState("curated");
   const [inStock, setInStock] = useState(false);
+  useEffect(() => {
+    let frame = 0;
+    const scrollToCollection = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        document.getElementById("collection")?.scrollIntoView();
+      });
+    };
+    const onHashChange = () => {
+      if (window.location.hash === "#collection") scrollToCollection();
+    };
+    const onLinkClick = (event: MouseEvent) => {
+      if (
+        event.button ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
+      const link = (event.target as Element).closest<HTMLAnchorElement>(
+        "a[href]",
+      );
+      if (!link || link.target === "_blank" || link.hasAttribute("download"))
+        return;
+      const destination = new URL(link.href);
+      if (
+        destination.origin === window.location.origin &&
+        destination.pathname === window.location.pathname &&
+        destination.search === window.location.search &&
+        destination.hash === "#collection"
+      ) {
+        event.preventDefault();
+        if (window.location.hash !== destination.hash) {
+          window.history.pushState(null, "", destination.href);
+        }
+        scrollToCollection();
+      }
+    };
+    // The streamed catalog can arrive after the router's first hash-scroll attempt.
+    onHashChange();
+    window.addEventListener("hashchange", onHashChange);
+    document.addEventListener("click", onLinkClick, true);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onLinkClick, true);
+    };
+  }, []);
   const filtered = products.filter(
     (p) =>
       (!inStock || p.stock > 0) &&
@@ -32,6 +82,7 @@ export default function Catalog({
   if (sort === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <section id="collection" className="catalog shell">
+      <VoucherOffers />
       <div className="section-heading">
         <div>
           <p className="eyebrow">GOOD DESIGN. EVERY DAY.</p>

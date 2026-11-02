@@ -23,6 +23,14 @@ public class SessionValidationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer demo_") && !request.getRequestURI().startsWith("/api/demo/")) {
+            response.setStatus(403); response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Demo credentials cannot access account or payment APIs\"}"); return;
+        }
+        if (request.getRequestURI().startsWith("/api/demo/")) {
+            response.setHeader("Cache-Control", "no-store"); filterChain.doFilter(request,response); return;
+        }
         HttpSession session = request.getSession(false);
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (session != null && authentication != null && authentication.isAuthenticated()) {

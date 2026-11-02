@@ -1,3 +1,4 @@
+import { demoToken, demoFetch, randomKey } from "./demo";
 // frontend/lib/api.ts
 import { Category, Product } from '@/types';
 import { responseError } from './shop';
@@ -6,8 +7,11 @@ const API_BASE_URL = typeof window === 'undefined'
   ? `${process.env.BACKEND_URL || 'http://127.0.0.1:8080'}/api`
   : (process.env.NEXT_PUBLIC_API_URL || '/api');
 
+const requireNormalContext = () => { if (demoToken()) throw new Error('Exit demo before using account settings.'); };
+
 // Fetch the masked token from the session-backed endpoint; never mix it with a raw cookie token.
 export const getCsrfToken = async (): Promise<string> => {
+  requireNormalContext();
   const response = await fetch(`${API_BASE_URL}/auth/csrf`, {
     credentials: 'include', cache: 'no-store',
   });
@@ -39,6 +43,7 @@ export const api = {
 
   // 🚀 新增：用户获取自己的会话
   getMySessions: async () => {
+    requireNormalContext();
     const res = await fetch(`${API_BASE_URL}/auth/sessions`, { credentials: 'include' });
     if (!res.ok) throw new Error('Failed to fetch sessions');
     return res.json();
@@ -62,6 +67,7 @@ export const api = {
 
   // 🚀 新增：管理员获取所有会话
   getAdminSessions: async () => {
+    requireNormalContext();
     const res = await fetch(`${API_BASE_URL}/auth/admin/sessions`, { credentials: 'include' });
     if (!res.ok) throw new Error('Failed to fetch admin sessions');
     return res.json();
@@ -85,6 +91,7 @@ export const api = {
 
   // 🚀 新增：AJAX 验证优惠券接口
   validateVoucher: async (vcode: string): Promise<{ discount: number }> => {
+    if(demoToken()) return demoFetch(`/validate-voucher?vcode=${encodeURIComponent(vcode)}`);
     const res = await fetch(`${API_BASE_URL}/checkout/validate-voucher?vcode=${encodeURIComponent(vcode)}`, {
       credentials: 'include' // 保持跨域会话
     });
@@ -97,6 +104,12 @@ export const api = {
 
   // 🚀 修改：入参改为支持携带 vcode 的 Payload
   checkout: async (payload: { cartItems: { pid: number; quantity: number }[], vcode?: string }): Promise<{ url: string }> => {
+    if(demoToken()) {
+      const serialized=JSON.stringify(payload); let cached;
+      try { cached=JSON.parse(sessionStorage.getItem('demo_checkout')||'null'); } catch {}
+      const key=cached?.payload===serialized ? cached.key : randomKey(); sessionStorage.setItem('demo_checkout',JSON.stringify({payload:serialized,key}));
+      const result=await demoFetch('/checkout',{method:'POST',body:serialized,headers:{'Idempotency-Key':key}}); sessionStorage.removeItem('demo_checkout'); return result;
+    }
     const csrfToken = await getCsrfToken();
     const res = await fetch(`${API_BASE_URL}/checkout/create-session`, {
       method: 'POST',
@@ -115,6 +128,7 @@ export const api = {
   },
 
   getMyOrders: async () => {
+    if(demoToken()) return demoFetch("/orders");
     const res = await fetch(`${API_BASE_URL}/orders/my-orders`, {
       cache: 'no-store',
       credentials: 'include'
@@ -124,6 +138,7 @@ export const api = {
   },
 
   getAdminOrders: async () => {
+    requireNormalContext();
     const res = await fetch(`${API_BASE_URL}/admin/orders`, {
       cache: 'no-store',
       credentials: 'include'

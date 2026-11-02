@@ -71,3 +71,9 @@ This is a single-instance portfolio application. Sessions are held in process, s
 ## Repository contents
 
 Application source, dependency lockfiles, schema migrations, tests, safe configuration templates and frontend assets are included. Local credentials, private keys, databases, reports, user uploads, generated builds and old Git history are excluded. Production hosting and shared infrastructure are managed separately from this repository.
+
+## One-click portfolio demo (2026-11-02)
+
+The guest demo update is being released. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
+
+Public registration is available through `/register` and has a visible Register button.

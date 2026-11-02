@@ -80,8 +80,8 @@ export default function ImportCollection({
       <div>
         <h3>The everyday edit</h3>
         <p>
-          8 demo essentials with photography, prices, and stock. Existing items
-          are kept.
+          {everydayEdit.length} demo essentials with photography, prices, and
+          stock. Existing items are kept.
         </p>
       </div>
       <button

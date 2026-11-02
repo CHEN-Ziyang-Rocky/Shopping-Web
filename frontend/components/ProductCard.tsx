@@ -7,13 +7,15 @@ export default function ProductCard({
   product,
   categories,
   index = 0,
+  demo = false,
 }: {
   product: Product;
   categories: Category[];
   index?: number;
+  demo?: boolean;
 }) {
   const category = categories.find((c) => c.catid === product.catid);
-  const href = productUrl(product, categories);
+  const href = demo ? `/demo/products/${product.pid}` : productUrl(product, categories);
   return (
     <article className="product-card">
       <Link

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
     Optional<Voucher> findByCode(String code);
+    java.util.List<Voucher> findByQuotaGreaterThanOrderByDiscountAsc(Integer quota);
 
     @Modifying
     @Query("update Voucher v set v.quota = v.quota + 1, v.version = v.version + 1 where v.code = :code")

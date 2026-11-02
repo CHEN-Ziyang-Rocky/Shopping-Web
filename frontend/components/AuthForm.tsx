@@ -202,7 +202,8 @@ export default function AuthForm({
             </Link>
           </div>
         ) : (
-          <form onSubmit={submit}>
+          <><p><Link href="/demo">Try Demo</Link> · No registration required. Explore with sample data.</p>
+        <form onSubmit={submit}>
             {!change && (
               <label className="form-field" htmlFor="email">
                 Email address
@@ -282,13 +283,13 @@ export default function AuthForm({
                     : "Sign in"}
               <Icon name="arrow" size={17} />
             </button>
-          </form>
+          </form></>
         )}
         {!change && (
           <p className="auth-switch">
             {register ? "Already part of the collection?" : "New around here?"}{" "}
-            <Link href={register ? "/login" : "/register"}>
-              {register ? "Sign in" : "Create an account"}
+            <Link className="button" href={register ? "/login" : "/register"}>
+              {register ? "Sign in" : "Register"}
             </Link>
           </p>
         )}

@@ -3,9 +3,11 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   ReactNode,
 } from "react";
+import { demoToken, demoFetch } from "@/lib/demo";
 import { API_BASE } from "@/lib/shop";
 export class CartItem {
   constructor(
@@ -44,6 +46,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const saveQueue = useRef<Promise<unknown>>(Promise.resolve());
   const [ready, setReady] = useState(false);
   const [notice, setNotice] = useState("");
   const [bagOpen, setBagOpen] = useState(false);
@@ -52,7 +55,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     async function restore() {
       try {
         let saved: unknown = [];
-        try {
+        if(demoToken()) saved=await demoFetch("/cart");
+        else try {
           saved = JSON.parse(localStorage.getItem("shopping_cart") || "[]");
         } catch {
           /* Ignore malformed or unavailable local storage. */
@@ -74,7 +78,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         const items = await Promise.all(
           [...quantities].map(async ([pid, quantity]) => {
-            const res = await fetch(`${API_BASE}/products/${pid}`);
+            const res = demoToken() ? {ok:true,status:200,json:()=>demoFetch(`/products/${pid}`)} : await fetch(`${API_BASE}/products/${pid}`);
             if (res.status === 404) return null;
             if (!res.ok)
               throw new Error(
@@ -110,6 +114,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!ready) return;
     try {
+      if(demoToken()) { const body=JSON.stringify(cart.map(({pid,quantity})=>({pid,quantity}))); saveQueue.current=saveQueue.current.catch(()=>{}).then(()=>demoFetch("/cart",{method:"PUT",body})).catch(()=>setNotice("Demo bag could not be saved. Please retry before leaving this page.")); return; }
       localStorage.setItem(
         "shopping_cart",
         JSON.stringify(cart.map(({ pid, quantity }) => ({ pid, quantity }))),

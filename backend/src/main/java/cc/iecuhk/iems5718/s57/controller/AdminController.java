@@ -76,6 +76,10 @@ public class AdminController {
     // 🚀 新增：作业要求 Display the DB orders table in admin panel
     @GetMapping("/orders")
     public ResponseEntity<?> getAllOrders() {
-        return ResponseEntity.ok(orderRepository.findAll());
+        var orders = orderRepository.findAll();
+        var names = productService.getAllProducts().stream().collect(java.util.stream.Collectors.toMap(
+                p -> p.getPid(), p -> p.getName()));
+        orders.forEach(order -> order.getItems().forEach(item -> item.setName(names.get(item.getPid()))));
+        return ResponseEntity.ok(orders);
     }
 }

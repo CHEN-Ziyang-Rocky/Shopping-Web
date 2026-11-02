@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DemoBanner from "@/components/DemoBanner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeRegistry from "@/components/ThemeRegistry";
@@ -28,6 +29,7 @@ export default function RootLayout({
                 Skip to content
               </a>
               <Navbar />
+              <DemoBanner />
               <div className="page-content">{children}</div>
               <Footer />
             </CartProvider>

@@ -9,6 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { money } from "@/lib/shop";
+import VoucherOffers from "./VoucherOffers";
 import { EmptyState } from "./ShopUI";
 export default function Navbar() {
   const {
@@ -38,9 +39,16 @@ export default function Navbar() {
   const closeMenu = () => {
     if (accountMenu.current) accountMenu.current.open = false;
   };
-  async function validateVoucher() {
+  async function validateVoucher(selectedCode?: string) {
     const request = ++voucherRequest.current;
-    const code = vcode.trim();
+    const code = (selectedCode ?? vcode).trim();
+    setVcode(code);
+    if (!user) {
+      setAppliedCode("");
+      setDiscount(0);
+      setMessage("Sign in, then apply this code before checkout.");
+      return;
+    }
     setValidating(true);
     setMessage("");
     try {
@@ -84,7 +92,7 @@ export default function Navbar() {
   return (
     <>
       <div className="announcement">
-        <span>Thoughtful essentials for a better everyday.</span>
+        <span>{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection · Sample products</Link> : <>Thoughtful essentials for a better everyday. <Link href="/demo">Try Demo</Link></>}</span>
         <span>
           Curated in Hong Kong <span aria-hidden="true">↗</span>
         </span>
@@ -167,10 +175,10 @@ export default function Navbar() {
                 </div>
               </details>
             ) : (
-              <Link className="account-trigger" href="/login">
+              <> <Link className="account-trigger" href="/login">
                 <Icon name="user" />
                 <span>{loading ? "Account" : "Sign in"}</span>
-              </Link>
+              </Link><Link className="button" href="/register">Register</Link></>
             )}
             <button
               className="bag-trigger"
@@ -200,6 +208,7 @@ export default function Navbar() {
             <Link href="/#collection">The collection</Link>
             <Link href="/user/orders">My orders</Link>
             <Link href="/user/security">Account & devices</Link>
+            {!user && <Link className="button" href="/register">Register</Link>}
             {user?.role === "ROLE_ADMIN" && (
               <Link href="/admin/products">Store manager</Link>
             )}
@@ -310,6 +319,11 @@ export default function Navbar() {
               ))}
             </div>
             <div className="bag-summary">
+              <VoucherOffers
+                compact
+                disabled={validating || checking}
+                onSelect={(code) => void validateVoucher(code)}
+              />
               <form
                 className="voucher-form"
                 onSubmit={(e) => {
@@ -352,7 +366,7 @@ export default function Navbar() {
               {discount > 0 && (
                 <div className="summary-row success-text">
                   <span>Voucher discount</span>
-                  <span>− {money(discount)}</span>
+                  <span>− {money(Math.min(discount, getCartTotal()))}</span>
                 </div>
               )}
               <div className="summary-row total">
@@ -373,8 +387,8 @@ export default function Navbar() {
                   onClick={() => void checkout()}
                 >
                   {checking
-                    ? "Opening secure checkout…"
-                    : "Continue to checkout"}
+                    ? (user?.role==="ROLE_DEMO" ? "Creating simulated order…" : "Opening secure checkout…")
+                    : (user?.role==="ROLE_DEMO" ? "Place simulated order" : "Continue to checkout")}
                   <Icon name="arrow" size={18} />
                 </button>
               ) : (
@@ -388,10 +402,10 @@ export default function Navbar() {
                 </Link>
               )}
               <p className="checkout-note">
-                <Icon name="lock" size={13} /> Secure Stripe checkout · HKD
+                <Icon name="lock" size={13} /> {user?.role==="ROLE_DEMO" ? "Simulated checkout · No card details · HKD" : "Secure Stripe checkout · HKD"}
               </p>
               <p className="demo-note">
-                Demo store. Use Stripe test payments only.
+                {user?.role==="ROLE_DEMO" ? "Test payments only. No real charges. Stripe is not called." : "Demo store. Use Stripe test payments only."}
               </p>
             </div>
           </>

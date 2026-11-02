@@ -31,7 +31,7 @@ public class SecurityConfig {
         CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(List.of(frontendUrl));
         cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        cors.setAllowedHeaders(List.of("Content-Type", "X-XSRF-TOKEN"));
+        cors.setAllowedHeaders(List.of("Content-Type", "X-XSRF-TOKEN", "Authorization", "Idempotency-Key"));
         cors.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", cors);
@@ -71,11 +71,12 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.deny()))
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/webhook/stripe")
+                        .ignoringRequestMatchers("/api/webhook/stripe", "/api/demo/**")
                         .csrfTokenRepository(tokenRepository)
                         .csrfTokenRequestHandler(delegate))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/categories", "/api/products/**", "/uploads/**").permitAll()
+                        .requestMatchers("/api/demo/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories", "/api/products/**", "/api/vouchers", "/uploads/**").permitAll()
                         .requestMatchers("/api/auth/csrf", "/api/auth/login", "/api/auth/register",
                                 "/api/webhook/stripe").permitAll()
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")

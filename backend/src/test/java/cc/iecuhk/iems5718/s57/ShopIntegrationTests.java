@@ -141,6 +141,26 @@ class ShopIntegrationTests extends MySqlTestSupport {
     }
 
     @Test
+    void publicVoucherOffersExcludeExhaustedCodesAndInternalFields() throws Exception {
+        voucher(0);
+        Voucher available = new Voucher();
+        available.setCode("PUBLIC20");
+        available.setDiscount(new java.math.BigDecimal("20.00"));
+        available.setQuota(3);
+        vouchers.saveAndFlush(available);
+        mvc.perform(get("/api/vouchers")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].code").value("PUBLIC20"))
+                .andExpect(jsonPath("$[0].discount").value(20.00))
+                .andExpect(jsonPath("$[0].quota").doesNotExist())
+                .andExpect(jsonPath("$[0].version").doesNotExist())
+                .andExpect(jsonPath("$[0].id").doesNotExist());
+        mvc.perform(post("/api/checkout/create-session").contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(request("PUBLIC20")))).andExpect(status().isForbidden());
+        verifyNoInteractions(gateway);
+    }
+
+    @Test
     void loginRotatesSessionAndDoesNotExposeOrOverwriteSessionIds() throws Exception {
         MockHttpSession anonymous = new MockHttpSession();
         String oldId = anonymous.getId();
@@ -700,5 +720,38 @@ class ShopIntegrationTests extends MySqlTestSupport {
         String payload = json.writeValueAsString(snapshot(order, "evt_old_signature", "checkout.session.completed", "paid"));
         signedSnapshot(payload, Instant.now().getEpochSecond() - 600).andExpect(status().isBadRequest());
         assertThat(events.count()).isZero();
+    }
+
+    @Test void demoKeepsNormalSessionAndCannotUseItsPrivileges() throws Exception {
+        var normal = login(alice.getEmail());
+        var created = mvc.perform(post("/api/demo/session").session(normal)
+            .header("Idempotency-Key", "e".repeat(64)).contentType(MediaType.APPLICATION_JSON).content("{}"))
+            .andExpect(status().isOk()).andReturn();
+        String token=json.readTree(created.getResponse().getContentAsString()).get("token").asText();
+        mvc.perform(get("/api/demo/me").header("Authorization","Bearer "+token)).andExpect(status().isOk());
+        mvc.perform(get("/api/orders/my-orders").session(normal).header("Authorization","Bearer "+token)).andExpect(status().isForbidden());
+        mvc.perform(get("/api/admin/orders").header("Authorization","Bearer "+token)).andExpect(status().isForbidden());
+        mvc.perform(post("/api/checkout/create-session").session(normal).header("Authorization","Bearer "+token)
+            .contentType(MediaType.APPLICATION_JSON).content("{\"cartItems\":[]}" )).andExpect(status().isForbidden());
+        mvc.perform(get("/api/auth/me").session(normal)).andExpect(status().isOk()).andExpect(jsonPath("$.email").value(alice.getEmail()));
+        mvc.perform(post("/api/demo/session").header("Idempotency-Key","f".repeat(64)).header("Origin","https://attacker.invalid")
+            .contentType(MediaType.APPLICATION_JSON).content("{}")).andExpect(status().isForbidden());
+    }
+
+    @Test void registrationCreatesRestrictedUserAndRejectsDuplicates() throws Exception {
+        var anonymous=new MockHttpSession();String token=csrf(anonymous);
+        String email="portfolio-registration@example.invalid";
+        mvc.perform(post("/api/auth/register").session(anonymous).header("X-XSRF-TOKEN",token)
+            .param("email",email).param("password","RegistrationFixture1!").param("confirmPassword","RegistrationFixture1!"))
+            .andExpect(status().isOk());
+        var registered=users.findByEmail(email).orElseThrow();
+        assertThat(registered.getRole()).isEqualTo("ROLE_USER");
+        assertThat(encoder.matches("RegistrationFixture1!",registered.getPassword())).isTrue();
+        mvc.perform(post("/api/auth/register").session(anonymous).header("X-XSRF-TOKEN",token)
+            .param("email",email).param("password","RegistrationFixture1!").param("confirmPassword","RegistrationFixture1!"))
+            .andExpect(status().isConflict());
+        mvc.perform(post("/api/auth/register").session(anonymous).header("X-XSRF-TOKEN",token)
+            .param("email","invalid").param("password","RegistrationFixture1!").param("confirmPassword","RegistrationFixture1!"))
+            .andExpect(status().isBadRequest());
     }
 }

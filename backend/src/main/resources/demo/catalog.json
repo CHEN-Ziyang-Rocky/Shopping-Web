@@ -1,0 +1,98 @@
+{
+  "categories": [
+    {
+      "catid": 1,
+      "name": "Audio & Tech"
+    },
+    {
+      "catid": 2,
+      "name": "Everyday Carry"
+    },
+    {
+      "catid": 3,
+      "name": "Desk & Living"
+    }
+  ],
+  "products": [
+    {
+      "pid": 1,
+      "catid": 1,
+      "name": "Everyday Headphones",
+      "price": 399,
+      "stock": 24,
+      "description": "Find a little more focus in your everyday. An over-ear silhouette for your morning playlists, afternoon work sessions, and everything in between.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/headphones.jpg",
+      "largeImage": "/catalog/headphones.jpg"
+    },
+    {
+      "pid": 2,
+      "catid": 2,
+      "name": "The Daily Backpack",
+      "price": 329,
+      "stock": 18,
+      "description": "Take the day in your stride. A clean, understated backpack to keep your everyday essentials close, from your commute to a weekend wander.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/backpack.jpg",
+      "largeImage": "/catalog/backpack.jpg"
+    },
+    {
+      "pid": 3,
+      "catid": 3,
+      "name": "Studio Lounge Chair",
+      "price": 899,
+      "stock": 5,
+      "description": "A softer place to pause. A sculptural chair with a warm wood frame and a calm, textured finish, made for the corner you call your own.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/chair.jpg",
+      "largeImage": "/catalog/chair.jpg"
+    },
+    {
+      "pid": 4,
+      "catid": 1,
+      "name": "Portable Speaker",
+      "price": 299,
+      "stock": 20,
+      "description": "Bring your soundtrack along. A compact, considered speaker for easy listening at your desk or sharing a favourite playlist with good company.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/speaker.jpg",
+      "largeImage": "/catalog/speaker.jpg"
+    },
+    {
+      "pid": 5,
+      "catid": 2,
+      "name": "Classic Everyday Watch",
+      "price": 459,
+      "stock": 12,
+      "description": "Make a little time for yourself. A classic watch silhouette with a warm leather look and a dial that brings a quiet detail to your everyday.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/watch.jpg",
+      "largeImage": "/catalog/watch.jpg"
+    },
+    {
+      "pid": 6,
+      "catid": 3,
+      "name": "The Reading Lamp",
+      "price": 249,
+      "stock": 16,
+      "description": "A brighter little corner. A simple task lamp to bring a focused pool of light to your reading, creative work, and late-night ideas.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/lamp.jpg",
+      "largeImage": "/catalog/lamp.jpg"
+    },
+    {
+      "pid": 7,
+      "catid": 1,
+      "name": "Everyday Camera",
+      "price": 1299,
+      "stock": 8,
+      "description": "Notice the little things. A camera-inspired addition to our everyday edit, celebrating the scenes, details, and memories worth keeping.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/camera.jpg",
+      "largeImage": "/catalog/camera.jpg"
+    },
+    {
+      "pid": 8,
+      "catid": 2,
+      "name": "Weekend Sunglasses",
+      "price": 189,
+      "stock": 22,
+      "description": "A fresh point of view. Rounded frames and an easy silhouette bring a little character to coffee runs, city walks, and unhurried weekends.\n\nPortfolio demonstration item. Illustrative photography; no brand affiliation or physical fulfilment. Simulated checkout only. No real charges.",
+      "thumbnailImage": "/catalog/sunglasses.jpg",
+      "largeImage": "/catalog/sunglasses.jpg"
+    }
+  ]
+}

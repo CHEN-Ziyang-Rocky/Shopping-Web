@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.math.BigDecimal;
+import cc.iecuhk.iems5718.s57.repository.VoucherRepository;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +21,17 @@ public class PublicController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private VoucherRepository vouchers;
+
+    public record VoucherOffer(String code, BigDecimal discount) {}
+
+    @GetMapping("/vouchers")
+    public ResponseEntity<List<VoucherOffer>> getAvailableVouchers() {
+        return ResponseEntity.ok(vouchers.findByQuotaGreaterThanOrderByDiscountAsc(0).stream()
+                .map(voucher -> new VoucherOffer(voucher.getCode(), voucher.getDiscount())).toList());
+    }
 
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategories() {

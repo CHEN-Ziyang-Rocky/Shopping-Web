@@ -26,13 +26,13 @@ export default function AccountLayout({
         >
           My orders
         </Link>
-        <Link
+        {user.role!=="ROLE_DEMO" && <><Link
           href="/user/security"
           className={path === "/user/security" ? "active" : ""}
         >
           Account & devices
         </Link>
-        <Link href="/change-password">Change password</Link>
+        <Link href="/change-password">Change password</Link></>}
       </nav>
       {children}
     </main>
