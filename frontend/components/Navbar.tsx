@@ -92,13 +92,9 @@ export default function Navbar() {
   return (
     <>
       <div className="announcement">
-        <span>{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection · Sample products</Link> : <>Thoughtful essentials for a better everyday. <Link href="/demo">Try Demo</Link></>}</span>
-        <span>
-          Curated in Hong Kong <span aria-hidden="true">↗</span>
-        </span>
-      </div>
-      <header className="site-header">
-        <nav className="project-links shell" aria-label="Project links">
+        <span className="announcement-full">{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection · Sample products</Link> : <>Thoughtful essentials for a better everyday. <Link href="/demo">Try Demo</Link></>}</span>
+        <span className="announcement-mobile">{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection</Link> : 'A portfolio project'}</span>
+        <nav className="project-links" aria-label="Project links">
           <a href="https://imrocky.com/"><span aria-hidden="true">← </span>Portfolio</a>
           <a
             href="https://github.com/CHEN-Ziyang-Rocky/Shopping-Web"
@@ -107,13 +103,15 @@ export default function Navbar() {
             aria-label="E-Commerce Web Application source on GitHub (opens in a new tab)"
           >GitHub <span aria-hidden="true">↗</span></a>
         </nav>
+      </div>
+      <header className="site-header">
         <div className="header-inner shell">
-          <Link href="/" className="wordmark" aria-label="Rocky.Tech home">
+          <Link href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/"} className="wordmark" aria-label="Rocky.Tech home">
             rocky<span className="brand-dot">.</span>tech
             <span className="wordmark-star">✳</span>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
-            <Link className={path === "/" ? "active" : ""} href="/#collection">
+            <Link className={path === "/" ? "active" : ""} href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/#collection"}>
               The collection
             </Link>
             <Link
@@ -214,7 +212,7 @@ export default function Navbar() {
             aria-label="Mobile navigation"
             onClick={() => setMobile(false)}
           >
-            <Link href="/#collection">The collection</Link>
+            <Link href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/#collection"}>The collection</Link>
             <Link href="/user/orders">My orders</Link>
             <Link href="/user/security">Account & devices</Link>
             {!user && <Link className="button" href="/register">Register</Link>}

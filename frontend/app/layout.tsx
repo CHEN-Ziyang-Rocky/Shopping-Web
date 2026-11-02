@@ -28,8 +28,10 @@ export default function RootLayout({
               <a href="#main-content" className="skip-link">
                 Skip to content
               </a>
-              <Navbar />
-              <DemoBanner />
+              <div className="app-chrome" data-app-chrome>
+                <Navbar />
+                <DemoBanner />
+              </div>
               <div className="page-content">{children}</div>
               <Footer />
             </CartProvider>
