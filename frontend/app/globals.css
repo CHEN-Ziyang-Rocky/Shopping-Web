@@ -153,6 +153,30 @@ img {
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
 }
+.project-links {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  min-height: 48px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  color: var(--ink);
+}
+.project-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.project-links a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
 .header-inner {
   height: 88px;
   display: flex;
