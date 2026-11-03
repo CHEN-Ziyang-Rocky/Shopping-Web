@@ -24,7 +24,7 @@ public class DemoController {
     private final Map<String,Object> catalog;
     private final Clock clock;
     private final SecureRandom random = new SecureRandom();
-    @Value("${DEMO_ENABLED:true}") boolean enabled = true;
+    @Value("${DEMO_ENABLED:false}") boolean enabled;
     @Value("${frontend.url:http://localhost:3000}") String origin = "http://localhost:3000";
     @Value("${DEMO_IDLE_SECONDS:3600}") long idle = 3600;
     @Value("${DEMO_MAX_SECONDS:86400}") long maximum = 86400;
@@ -48,7 +48,7 @@ public class DemoController {
     }
     private void fail(int code,String message) { throw new ResponseStatusException(HttpStatus.valueOf(code),message); }
     private void boundary(HttpServletRequest req) {
-        if (!enabled) fail(503,"Demo temporarily unavailable");
+        if (!enabled) fail(410,"The guest demo has been retired. Visit the storefront.");
         if (idle < 1 || maximum < 1 || capacity < 1 || createLimit < 1 || requestLimit < 1) fail(503,"Invalid demo resource configuration");
         String supplied = req.getHeader("Origin");
         if (supplied != null && !origin.equals(supplied)) fail(403,"Origin rejected");

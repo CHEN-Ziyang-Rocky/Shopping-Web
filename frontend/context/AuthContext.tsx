@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { demoToken, demoFetch, exitDemo } from '@/lib/demo';
 import { getCsrfToken } from '@/lib/api';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
@@ -31,7 +30,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        if(demoToken()) { setUser(await demoFetch('/me')); return; }
+        // Retire the old tab-scoped demo without touching the normal account or bag.
+        try {
+          for (const key of ['portfolio_demo_token', 'portfolio_demo_key', 'demo_checkout']) {
+            sessionStorage.removeItem(key);
+          }
+        } catch { /* Storage may be unavailable. */ }
         const res = await fetch(`${API_BASE_URL}/auth/me`, {
           credentials: 'include', // 【核心】必须带上这句，才会发送 Cookie
         });
@@ -56,7 +60,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      if(demoToken()) { await exitDemo(); return; }
       // 告诉后端销毁 Session
       const token = await getCsrfToken();
       const response = await fetch(`${API_BASE_URL}/auth/logout`, {

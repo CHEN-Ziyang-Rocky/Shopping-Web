@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import DemoBanner from "@/components/DemoBanner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeRegistry from "@/components/ThemeRegistry";
@@ -30,7 +29,6 @@ export default function RootLayout({
               </a>
               <div className="app-chrome" data-app-chrome>
                 <Navbar />
-                <DemoBanner />
               </div>
               <div className="page-content">{children}</div>
               <Footer />

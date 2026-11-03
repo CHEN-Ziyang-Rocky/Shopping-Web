@@ -1,10 +1,10 @@
 # Project navigation
 
-E-Commerce Web Application exposes an integrated `Project links` navigation on application, sign-in and demo pages (and registration where supported). Both links remain visible on mobile without opening a menu. Application headers and the compact demo controls stay at the top while the page scrolls. Links share the existing application toolbar (or the shop announcement bar), rather than adding a separate navigation row. Public entry pages group the links with the application identity.
+E-Commerce Web Application exposes an integrated `Project links` navigation on application, sign-in and demo pages (and registration where supported). Both links remain visible on mobile without opening a menu. The store header stays at the top while the page scrolls. Links share the existing application toolbar (or the shop announcement bar), rather than adding a separate navigation row. Public entry pages group the links with the application identity.
 
 - `← Portfolio`: return to https://imrocky.com/ in the current tab.
 - `GitHub ↗`: open https://github.com/CHEN-Ziyang-Rocky/Shopping-Web in a new tab, with `noopener noreferrer`.
-- Demo entry: https://shop.imrocky.com/demo
+- Storefront: https://shop.imrocky.com/
 
 The links use ordinary anchors, visible keyboard focus and a minimum 44px touch height. They do not create sessions or change authentication. This change adds no dependencies, backend routes, database migrations or infrastructure configuration.
 

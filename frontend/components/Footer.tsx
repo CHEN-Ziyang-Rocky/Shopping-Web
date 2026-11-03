@@ -1,9 +1,6 @@
-'use client';
-import { useAuth } from '@/context/AuthContext';
 import Link from "next/link";
 import Icon from "./Icon";
 export default function Footer() {
-  const {user}=useAuth();
   return (
     <footer className="site-footer">
       <div className="shell footer-main">
@@ -24,14 +21,14 @@ export default function Footer() {
         </div>
         <div>
           <p className="eyebrow">YOUR CORNER</p>
-          {user?.role==="ROLE_DEMO" ? <Link href="/demo/shop">Demo collection</Link> : <Link href="/user/security">Account & devices</Link>}
+          <Link href="/user/security">Account &amp; devices</Link>
           <Link href="/login">Sign in / Create account</Link>
         </div>
         <div className="footer-payment">
           <Icon name="shield" size={24} />
           <strong>A safe space to shop.</strong>
           <p>
-            {user?.role==="ROLE_DEMO" ? "Simulated checkout. No real charges." : "Secure payments with Stripe."}
+            Secure payments with Stripe.
             <br />
             All prices in HKD.
           </p>
@@ -41,7 +38,7 @@ export default function Footer() {
         <span>
           © {new Date().getFullYear()} Rocky.Tech. Curated with intention.
         </span>
-        <span>Portfolio demo store · Test payments only</span>
+        <span>Portfolio store · Test payments only</span>
         <span>
           HONG KONG <span className="small-dot" />
         </span>

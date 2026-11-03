@@ -72,8 +72,8 @@ This is a single-instance portfolio application. Sessions are held in process, s
 
 Application source, dependency lockfiles, schema migrations, tests, safe configuration templates and frontend assets are included. Local credentials, private keys, databases, reports, user uploads, generated builds and old Git history are excluded. Production hosting and shared infrastructure are managed separately from this repository.
 
-## One-click portfolio demo (2026-11-02)
+## Browse and check out
 
-The guest demo is deployed at https://shop.imrocky.com/demo. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
+Open the [public storefront](https://shop.imrocky.com/) to browse products and fill a shopping bag without signing in. The bag is saved in the browser. At checkout, sign in or register; the checkout links return you to the saved bag after sign-in. Stripe checkout remains in test mode.
 
-Public registration is available through `/register` and has a visible Register button.
+The former `/demo` and its subpages redirect to the storefront. The separate simulated demo API is disabled by default; see the [archived demo notes](docs/ONE-CLICK-DEMO.md).

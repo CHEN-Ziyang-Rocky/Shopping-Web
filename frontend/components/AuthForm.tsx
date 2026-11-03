@@ -48,14 +48,18 @@ function PasswordField({
 }
 export default function AuthForm({
   mode,
+  returnToBag = false,
 }: {
   mode: "login" | "register" | "password";
+  returnToBag?: boolean;
 }) {
   const register = mode === "register",
     change = mode === "password";
   const { user, loading, login, clearUser } = useAuth();
   const { setBagOpen } = useCart();
   const router = useRouter();
+  const loginHref = returnToBag ? "/login?next=bag" : "/login";
+  const registerHref = returnToBag ? "/register?next=bag" : "/register";
   const [email, setEmail] = useState("");
   const [old, setOld] = useState("");
   const [password, setPassword] = useState("");
@@ -116,7 +120,7 @@ export default function AuthForm({
         const data = await response.json();
         login({ email: data.email, role: data.role });
         const next = new URLSearchParams(window.location.search).get("next");
-        if (next === "bag") {
+        if (returnToBag) {
           router.push("/");
           setBagOpen(true);
         } else if (next === "/user/orders" || next === "/user/security")
@@ -125,7 +129,7 @@ export default function AuthForm({
       } else {
         setSuccess(true);
         if (change) clearUser();
-        setTimeout(() => router.push("/login"), 2000);
+        setTimeout(() => router.push(loginHref), 2000);
       }
     } catch (e) {
       setError(
@@ -184,6 +188,7 @@ export default function AuthForm({
               ? "Create an account to make these essentials yours."
               : "Sign in to your favourites, your bag, and your orders."}
         </p>
+        {returnToBag && <p>Your bag is saved. Sign in to return to checkout.</p>}
         {error && (
           <div style={{ marginTop: 20 }}>
             <Notice error>{error}</Notice>
@@ -196,14 +201,13 @@ export default function AuthForm({
                 ? "Password updated. Please sign in again."
                 : "Your account is ready. Taking you to sign in…"}
             </Notice>
-            <Link className="button primary" href="/login">
+            <Link className="button primary" href={loginHref}>
               Continue to sign in
               <Icon name="arrow" size={17} />
             </Link>
           </div>
         ) : (
-          <><p><Link href="/demo">Try Demo</Link> · No registration required. Explore with sample data.</p>
-        <form onSubmit={submit}>
+          <form onSubmit={submit}>
             {!change && (
               <label className="form-field" htmlFor="email">
                 Email address
@@ -283,12 +287,12 @@ export default function AuthForm({
                     : "Sign in"}
               <Icon name="arrow" size={17} />
             </button>
-          </form></>
+          </form>
         )}
         {!change && (
           <p className="auth-switch">
             {register ? "Already part of the collection?" : "New around here?"}{" "}
-            <Link className="button" href={register ? "/login" : "/register"}>
+            <Link className="button" href={register ? loginHref : registerHref}>
               {register ? "Sign in" : "Register"}
             </Link>
           </p>

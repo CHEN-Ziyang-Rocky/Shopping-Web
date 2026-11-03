@@ -1,3 +1,5 @@
+> Archived: the portfolio now links to the public storefront. Former demo pages redirect there and the separate API is disabled by default (`DEMO_ENABLED=false`). The notes below describe the previous release.
+
 # 一键演示（2026-11-02）
 
 状态：已于 2026-11-03 部署并完成公网接口验收。本轮按用户授权发布，保留原有未提交工作；未执行数据库 reset，未修改 Nginx、端口或真实用户数据。

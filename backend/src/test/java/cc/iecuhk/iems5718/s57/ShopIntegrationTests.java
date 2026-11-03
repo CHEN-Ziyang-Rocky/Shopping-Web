@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
          "spring.jpa.show-sql=false",
         "shop.bootstrap.enabled=false", "stripe.webhook.secret=whsec_test_only",
         "app.upload.dir=target/test-uploads/",
-        "frontend.url=http://localhost:3000"
+        "frontend.url=http://localhost:3000", "DEMO_ENABLED=true"
 })
 @AutoConfigureMockMvc
 class ShopIntegrationTests extends MySqlTestSupport {

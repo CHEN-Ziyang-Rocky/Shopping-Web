@@ -92,8 +92,8 @@ export default function Navbar() {
   return (
     <>
       <div className="announcement">
-        <span className="announcement-full">{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection · Sample products</Link> : <>Thoughtful essentials for a better everyday. <Link href="/demo">Try Demo</Link></>}</span>
-        <span className="announcement-mobile">{user?.role === "ROLE_DEMO" ? <Link href="/demo/shop">Demo collection</Link> : 'A portfolio project'}</span>
+        <span className="announcement-full">Thoughtful essentials for a better everyday.</span>
+        <span className="announcement-mobile">A portfolio project</span>
         <nav className="project-links" aria-label="Project links">
           <a href="https://imrocky.com/"><span aria-hidden="true">← </span>Portfolio</a>
           <a
@@ -106,12 +106,12 @@ export default function Navbar() {
       </div>
       <header className="site-header">
         <div className="header-inner shell">
-          <Link href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/"} className="wordmark" aria-label="Rocky.Tech home">
+          <Link href="/" className="wordmark" aria-label="Rocky.Tech home">
             rocky<span className="brand-dot">.</span>tech
             <span className="wordmark-star">✳</span>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
-            <Link className={path === "/" ? "active" : ""} href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/#collection"}>
+            <Link className={path === "/" ? "active" : ""} href="/#collection">
               The collection
             </Link>
             <Link
@@ -212,7 +212,7 @@ export default function Navbar() {
             aria-label="Mobile navigation"
             onClick={() => setMobile(false)}
           >
-            <Link href={user?.role === "ROLE_DEMO" ? "/demo/shop" : "/#collection"}>The collection</Link>
+            <Link href="/#collection">The collection</Link>
             <Link href="/user/orders">My orders</Link>
             <Link href="/user/security">Account & devices</Link>
             {!user && <Link className="button" href="/register">Register</Link>}
@@ -393,26 +393,29 @@ export default function Navbar() {
                   }
                   onClick={() => void checkout()}
                 >
-                  {checking
-                    ? (user?.role==="ROLE_DEMO" ? "Creating simulated order…" : "Opening secure checkout…")
-                    : (user?.role==="ROLE_DEMO" ? "Place simulated order" : "Continue to checkout")}
+                  {checking ? "Opening secure checkout…" : "Continue to checkout"}
                   <Icon name="arrow" size={18} />
                 </button>
               ) : (
-                <Link
-                  href="/login?next=bag"
-                  className="button primary full-width"
-                  onClick={() => setBagOpen(false)}
-                >
-                  Sign in to checkout
-                  <Icon name="arrow" size={18} />
-                </Link>
+                <>
+                  <Link
+                    href="/login?next=bag"
+                    className="button primary full-width"
+                    onClick={() => setBagOpen(false)}
+                  >
+                    Sign in to checkout
+                    <Icon name="arrow" size={18} />
+                  </Link>
+                  <Link className="button full-width" href="/register?next=bag" onClick={() => setBagOpen(false)}>
+                    Register to checkout
+                  </Link>
+                </>
               )}
               <p className="checkout-note">
-                <Icon name="lock" size={13} /> {user?.role==="ROLE_DEMO" ? "Simulated checkout · No card details · HKD" : "Secure Stripe checkout · HKD"}
+                <Icon name="lock" size={13} /> Secure Stripe checkout · HKD
               </p>
               <p className="demo-note">
-                {user?.role==="ROLE_DEMO" ? "Test payments only. No real charges. Stripe is not called." : "Demo store. Use Stripe test payments only."}
+                Portfolio store · Use Stripe test payments only.
               </p>
             </div>
           </>

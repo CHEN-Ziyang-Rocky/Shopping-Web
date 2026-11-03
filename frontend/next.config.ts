@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [{ source: '/demo/:path*', destination: '/', permanent: false }];
+  },
   async rewrites() {
     const backend = process.env.BACKEND_URL || 'http://localhost:8080';
     return [{ source: '/uploads/:path*', destination: `${backend}/uploads/:path*` },

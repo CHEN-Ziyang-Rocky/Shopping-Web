@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { API_BASE, money } from "@/lib/shop";
-import { demoToken, demoFetch } from "@/lib/demo";
 import Icon from "./Icon";
 type Offer = { code: string; discount: number };
 export default function VoucherOffers({
@@ -17,7 +16,6 @@ export default function VoucherOffers({
   const [copied, setCopied] = useState("");
   const [error, setError] = useState("");
   useEffect(() => {
-    if(demoToken()) { demoFetch("/vouchers").then(setOffers).catch(()=>{}); return; }
     const controller = new AbortController();
     fetch(`${API_BASE}/vouchers`, {
       cache: "no-store",
